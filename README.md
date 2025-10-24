@@ -43,7 +43,7 @@ Presume-se que você já tenha PHP (versão 8.2 ou superior), Composer, Node.js 
 
 ## Autenticação (Login/Registro)
 
-O projeto agora utiliza autenticação JWT (JSON Web Tokens) para proteger as rotas da API. Você precisará registrar um usuário e fazer login para acessar as funcionalidades de gerenciamento de tarefas.
+O projeto utiliza autenticação JWT (JSON Web Tokens) para proteger as rotas da API. Você precisará registrar um usuário e fazer login para acessar as funcionalidades de gerenciamento de tarefas.
 
 ## Estrutura do Projeto
 
