@@ -1,136 +1,187 @@
 # Documentação da API de Tarefas
 
-Esta documentação descreve os endpoints disponíveis na API de tarefas.
+Esta documentação descreve os endpoints disponíveis na API de tarefas, incluindo a autenticação JWT.
 
 ---
 
-## Listar todas as Tarefas
+## Autenticação JWT
 
-Retorna uma lista de todas as tarefas cadastradas.
+Para acessar as rotas protegidas da API, é necessário obter um JSON Web Token (JWT) através dos endpoints de autenticação. O token deve ser incluído no cabeçalho `Authorization` de todas as requisições protegidas no formato `Bearer <seu_token>`.
 
-- **URL:** `/api/tasks`
-- **Método:** `GET`
-- **Autenticação:** Nenhuma (por enquanto)
+### Registrar um Novo Usuário
 
-### Resposta de Sucesso (200 OK)
+Cria uma nova conta de usuário.
 
-A resposta será um array de objetos JSON, onde cada objeto representa uma tarefa.
+-   **URL:** `/api/auth/register`
+-   **Método:** `POST`
+-   **Autenticação:** Nenhuma
 
-**Exemplo de Resposta (com dados):**
+#### Parâmetros da Requisição (JSON Body)
+
+| Campo      | Tipo   | Obrigatório | Descrição                               |
+|------------|--------|-------------|-----------------------------------------|
+| `name`     | string | Sim         | Nome do usuário (entre 2 e 100 caracteres). |
+| `email`    | string | Sim         | Endereço de e-mail único do usuário.    |
+| `password` | string | Sim         | Senha do usuário (mínimo 6 caracteres). |
+| `password_confirmation` | string | Sim | Confirmação da senha. |
+
+#### Resposta de Sucesso (201 Created)
 
 ```json
-[
-    {
-        "id": 1,
-        "title": "Configurar o ambiente de desenvolvimento",
-        "completed": true,
-        "created_at": "2025-10-24T02:00:00.000000Z",
-        "updated_at": "2025-10-24T02:00:00.000000Z"
-    },
-    {
-        "id": 2,
-        "title": "Criar a documentação da API",
-        "completed": false,
-        "created_at": "2025-10-24T02:05:00.000000Z",
-        "updated_at": "2025-10-24T02:05:00.000000Z"
+{
+    "message": "User successfully registered",
+    "user": {
+        "name": "Nome do Usuário",
+        "email": "usuario@example.com",
+        "updated_at": "2025-10-24T10:00:00.000000Z",
+        "created_at": "2025-10-24T10:00:00.000000Z",
+        "id": 1
     }
-]
+}
 ```
 
-**Exemplo de Resposta (sem dados):**
+#### Resposta de Erro (400 Bad Request)
 
 ```json
-[]
+{
+    "email": [
+        "The email has already been taken."
+    ]
+}
 ```
 
-### Estrutura do Objeto `Task`
+### Fazer Login
 
-| Campo | Tipo | Descrição |
-|---|---|---|
-| `id` | integer | O ID único da tarefa. |
-| `title` | string | O título ou nome da tarefa. |
-| `completed` | boolean | Indica se a tarefa foi concluída (`true`) ou não (`false`). |
-| `created_at` | timestamp | A data e hora de criação da tarefa. |
-| `updated_at` | timestamp | A data e hora da última atualização da tarefa. |
+Autentica um usuário e retorna um JWT.
+
+-   **URL:** `/api/auth/login`
+-   **Método:** `POST`
+-   **Autenticação:** Nenhuma
+
+#### Parâmetros da Requisição (JSON Body)
+
+| Campo      | Tipo   | Obrigatório | Descrição                               |
+|------------|--------|-------------|-----------------------------------------|
+| `email`    | string | Sim         | Endereço de e-mail do usuário.          |
+| `password` | string | Sim         | Senha do usuário.                       |
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+    "access_token": "eyJ0eXAiOiJKV1Qi...",
+    "token_type": "bearer",
+    "expires_in": 3600
+}
+```
+
+#### Resposta de Erro (401 Unauthorized)
+
+```json
+{
+    "error": "Unauthorized"
+}
+```
+
+### Obter Dados do Usuário Autenticado
+
+Retorna os dados do usuário atualmente autenticado.
+
+-   **URL:** `/api/auth/me`
+-   **Método:** `POST`
+-   **Autenticação:** JWT (Bearer Token)
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+    "id": 1,
+    "name": "Nome do Usuário",
+    "email": "usuario@example.com",
+    "email_verified_at": null,
+    "created_at": "2025-10-24T10:00:00.000000Z",
+    "updated_at": "2025-10-24T10:00:00.000000Z"
+}
+```
+
+#### Resposta de Erro (401 Unauthorized)
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
+
+### Fazer Logout
+
+Invalida o token JWT do usuário, encerrando a sessão.
+
+-   **URL:** `/api/auth/logout`
+-   **Método:** `POST`
+-   **Autenticação:** JWT (Bearer Token)
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+    "message": "Successfully logged out"
+}
+```
+
+### Atualizar Token
+
+Obtém um novo token JWT sem a necessidade de fazer login novamente.
+
+-   **URL:** `/api/auth/refresh`
+-   **Método:** `POST`
+-   **Autenticação:** JWT (Bearer Token)
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+    "access_token": "eyJ0eXAiOiJKV1Qi... (novo token)",
+    "token_type": "bearer",
+    "expires_in": 3600
+}
+```
 
 ---
 
-## Criar uma Nova Tarefa
+## Endpoints da API de Tarefas (Protegidos por JWT)
+
+Todos os endpoints abaixo agora exigem um token JWT válido no cabeçalho `Authorization`.
+
+### Listar todas as Tarefas
+
+Retorna uma lista de todas as tarefas cadastradas, ordenadas por data de criação decrescente.
+
+-   **URL:** `/api/tasks`
+-   **Método:** `GET`
+-   **Autenticação:** JWT (Bearer Token)
+
+### Criar uma Nova Tarefa
 
 Cria uma nova tarefa no sistema.
 
 -   **URL:** `/api/tasks`
 -   **Método:** `POST`
--   **Autenticação:** Nenhuma (por enquanto)
+-   **Autenticação:** JWT (Bearer Token)
 
-### Parâmetros da Requisição (JSON Body)
-
-| Campo       | Tipo    | Obrigatório | Descrição                               |
-| ----------- | ------- | ----------- | --------------------------------------- |
-| `title`     | string  | Sim         | O título da nova tarefa.                |
-| `completed` | boolean | Não         | Indica se a tarefa está concluída. Padrão: `false`. |
-
-### Resposta de Sucesso (201 Created)
-
-Retorna o objeto da tarefa recém-criada.
-
-**Exemplo de Resposta:**
-
-```json
-{
-    "title": "Minha Nova Tarefa",
-    "completed": false,
-    "updated_at": "2025-10-24T03:00:00.000000Z",
-    "created_at": "2025-10-24T03:00:00.000000Z",
-    "id": 3
-}
-```
-
----
-
-## Atualizar uma Tarefa Existente
+### Atualizar uma Tarefa Existente
 
 Atualiza os detalhes de uma tarefa específica.
 
 -   **URL:** `/api/tasks/{id}`
 -   **Método:** `PUT` ou `PATCH`
--   **Autenticação:** Nenhuma (por enquanto)
+-   **Autenticação:** JWT (Bearer Token)
 
-### Parâmetros da Requisição (JSON Body)
-
-| Campo       | Tipo    | Obrigatório | Descrição                               |
-| ----------- | ------- | ----------- | --------------------------------------- |
-| `title`     | string  | Sim         | O novo título da tarefa.                |
-| `completed` | boolean | Não         | O novo status de conclusão da tarefa. |
-
-### Resposta de Sucesso (200 OK)
-
-Retorna o objeto da tarefa atualizada.
-
-**Exemplo de Resposta:**
-
-```json
-{
-    "id": 1,
-    "title": "Configurar o ambiente de desenvolvimento (Atualizado)",
-    "completed": true,
-    "created_at": "2025-10-24T02:00:00.000000Z",
-    "updated_at": "2025-10-24T03:10:00.000000Z"
-}
-```
-
----
-
-## Excluir uma Tarefa
+### Excluir uma Tarefa
 
 Exclui uma tarefa específica do sistema.
 
 -   **URL:** `/api/tasks/{id}`
 -   **Método:** `DELETE`
--   **Autenticação:** Nenhuma (por enquanto)
-
-### Resposta de Sucesso (204 No Content)
-
-Nenhuma resposta de conteúdo é retornada após a exclusão bem-sucedida.
+-   **Autenticação:** JWT (Bearer Token)
 
 ---
