@@ -2,6 +2,9 @@
 
 Este projeto demonstra uma aplicação de gerenciamento de tarefas com backend em Laravel (PHP) e frontend em Vue.js.
 
+<img width="703" height="395" alt="image" src="https://github.com/user-attachments/assets/c73c4ebe-a309-401b-b4f1-0f1618cb7a36" />
+
+
 ## Pré-requisitos
 
 Presume-se que você já tenha PHP (versão 8.2 ou superior), Composer, Node.js (versão 18 ou superior) e npm/yarn configurados em seu ambiente de desenvolvimento. Além disso, é necessário ter um servidor PostgreSQL em execução e acessível.
