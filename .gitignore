@@ -19,3 +19,4 @@ Thumbs.db
 *.sqlite
 /bootstrap/cache/
 /doc
+Thumbs.db
