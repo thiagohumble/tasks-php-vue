@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->boolean('completed')->default(false);
+            $table->dateTime('scheduled_to')->nullable();
+            $table->boolean('is_notified')->default(false);
             $table->timestamps();
         });
     }

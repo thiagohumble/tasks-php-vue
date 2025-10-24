@@ -12,7 +12,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::all();
+        return Task::orderBy('created_at', 'desc')->get();
     }
 
     /**
