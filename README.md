@@ -4,15 +4,6 @@ Este projeto demonstra uma aplicação de gerenciamento de tarefas com backend e
 
 <img width="703" height="395" alt="image" src="https://github.com/user-attachments/assets/c73c4ebe-a309-401b-b4f1-0f1618cb7a36" />
 
-
-## Pré-requisitos
-
-Presume-se que você já tenha PHP (versão 8.2 ou superior), Composer, Node.js (versão 18 ou superior) e npm/yarn configurados em seu ambiente de desenvolvimento. Além disso, é necessário ter um servidor PostgreSQL em execução e acessível.
-
-## Autenticação (Login/Registro)
-
-O projeto agora utiliza autenticação JWT (JSON Web Tokens) para proteger as rotas da API. Você precisará registrar um usuário e fazer login para acessar as funcionalidades de gerenciamento de tarefas.
-
 ### 1. Registro de Usuário
 
 Para criar uma nova conta de usuário:
@@ -39,6 +30,20 @@ Para sair da sua conta:
 1.  Após o login, um botão "Logout" estará visível no canto superior direito.
 2.  Clique no botão "Logout" para encerrar sua sessão.
 
+
+
+
+
+
+
+
+## Pré-requisitos
+
+Presume-se que você já tenha PHP (versão 8.2 ou superior), Composer, Node.js (versão 18 ou superior) e npm/yarn configurados em seu ambiente de desenvolvimento. Além disso, é necessário ter um servidor PostgreSQL em execução e acessível.
+
+## Autenticação (Login/Registro)
+
+O projeto agora utiliza autenticação JWT (JSON Web Tokens) para proteger as rotas da API. Você precisará registrar um usuário e fazer login para acessar as funcionalidades de gerenciamento de tarefas.
 
 ## Estrutura do Projeto
 
