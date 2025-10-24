@@ -257,6 +257,36 @@ Presume-se que você já tenha PHP (versão 8.2 ou superior), Composer, Node.js 
     ```
     O frontend estará disponível em `http://localhost:5173` (ou outra porta, se especificado).
 
+## Autenticação (Login/Registro)
+
+O projeto agora utiliza autenticação JWT (JSON Web Tokens) para proteger as rotas da API. Você precisará registrar um usuário e fazer login para acessar as funcionalidades de gerenciamento de tarefas.
+
+### 1. Registro de Usuário
+
+Para criar uma nova conta de usuário:
+
+1.  No frontend, clique no botão "Register" (se estiver na tela de Login).
+2.  Preencha os campos "Name", "Email", "Password" e "Confirm Password".
+3.  Clique no botão "Register".
+
+Após o registro bem-sucedido, você será redirecionado para a tela de Login.
+
+### 2. Login de Usuário
+
+Para acessar o sistema:
+
+1.  Na tela de Login, insira seu "Email" e "Password".
+2.  Clique no botão "Login".
+
+Após o login bem-sucedido, você terá acesso à lista de tarefas e poderá gerenciá-las.
+
+### 3. Logout
+
+Para sair da sua conta:
+
+1.  Após o login, um botão "Logout" estará visível no canto superior direito.
+2.  Clique no botão "Logout" para encerrar sua sessão.
+
 ## Comandos Úteis
 
 *   **Backend (no diretório `backend/`):**
