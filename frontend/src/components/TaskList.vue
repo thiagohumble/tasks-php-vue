@@ -27,7 +27,7 @@
     <p v-else-if="!loading && !error">No tasks found. Add some above!</p>
 
     <!-- Edit Task Modal/Form -->
-    <div v-if="editingTask" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+    <div v-if="editingTask" class="p-4 border bg-white shadow-lg">
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h3 class="text-lg font-bold mb-4 text-gray-800">Edit Task</h3>
         <input
